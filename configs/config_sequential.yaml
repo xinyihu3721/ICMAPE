@@ -1,0 +1,27 @@
+defaults:
+  - agent/sequential@agent: multicpe_sac
+  - environment: bandit
+
+experiment:
+  name: "MDPEnv"
+  description: "test mdp environment"
+  seed: 42
+  num_processes: 5
+  wandb_group: null
+
+
+training:
+  save_frequency: 50000
+  max_training_steps: 400000  # Maximum number of training steps
+  cost_per_timestep: 0.  # Enabled only if stopping action is enabled
+  checkpoint_path: null  # Path to checkpoint file to load and continue training from (set to null or omit to start from scratch)
+  continue_training: false  # If true, continue training from checkpoint
+  start_step: null  # Starting step for training (only used if continue_training=true)
+  eval:
+    eval_period: 100  # Frequency of evaluations
+    eval_num_env_instances: 10
+    eval_num_trajectories: 1
+
+eval:
+  num_env_instances: 20
+  num_trajectories: 20

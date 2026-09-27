@@ -1,0 +1,7 @@
+type: "GaussianBandit"
+min_value: 0
+max_value: 1
+std: 0.2
+num_magic_actions: 0
+std_magic_action: 0
+minimum_gap: 0

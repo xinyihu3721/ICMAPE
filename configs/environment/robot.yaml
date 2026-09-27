@@ -1,0 +1,30 @@
+# Robot signal-detector exploration (RobotSequentialEnvConfig).
+defaults:
+  - robot_env: robot_exploration2
+
+# 4 moves + stay (index 4); policy uses +1 stop (index 5) when enable_stopping_action.
+num_actions: 5
+horizon: 35
+num_players: 3
+enable_stopping_action: true
+decentralized: true
+reward_struct: per_player
+num_rewards: 1
+grid_size: 25
+
+view_side: 5
+smoke_decay: 0.3
+smoke_obs_sigma: 0.05
+use_l1_view_mask: false
+l1_view_radius: null
+# Position-history tensor length for critic/actor defaults to ``horizon`` (see ``RobotBaseOffPolicyAgentSAC``).
+# Set ``max_history_len`` only if you want history shorter than one episode (rare).
+seed: null
+# Optional: per-agent area indices ``(area_row, area_col)`` in ``{0,…,(grid_size/view_side)-1}²`` (not cell coords).
+start_positions: null
+num_signal_cells_min: 1
+num_signal_cells_max: 1
+signal_hit_prob: 0.9
+distractor_intensity_min: 0.0
+distractor_intensity_max: 0.7
+noise_prob: 0.1

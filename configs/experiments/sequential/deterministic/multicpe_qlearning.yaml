@@ -1,0 +1,63 @@
+# @package _global_
+defaults:
+  - override /agent/sequential@agent: multicpe_qlearning
+  - override /environment: bandit
+
+experiment:
+  name: "DecentDeterministicBanditCapacity"
+  description: "Decentralized deterministic bandit (fixed horizon). Multi-agent Q-learning with LSTM inference, epsilon-greedy exploration schedule."
+
+environment:
+  bandit_env:
+    type: "GaussianBandit"
+    min_value: 0
+    max_value: 1
+    std: 0
+    num_magic_actions: 0
+    std_magic_action: 0
+    minimum_gap: 0
+  enable_stopping_action: True
+
+training:
+  save_frequency: 50000
+  max_training_steps: 500000
+  use_oracle_reward: False
+  cost_per_timestep: 0  # Enabled only if stopping action is enabled
+
+agent:
+  learning_rate: 1e-5   # fallback for critic/inference if not overridden
+  critic_learning_rate: 5e-5
+  inference_learning_rate: 5e-5
+  final_learning_rate: 1e-5
+  grad_clipping: 2
+  buffer_size: 5000000
+  gamma: 0.999                       # discount factor for rewards
+  batch_size: 256                    # batch size
+  num_env_instances: 40
+  num_trajectories: 1
+  polyak_update_q_network: 0.01      
+  frequency_update_i_network: 2      # * times horizon
+  replay_ratio: 1
+  inference_network_bootstrap_num_batches: 300
+  initial_buffer_bootstrap_num_batches: 10
+  architecture_type: "lstm"
+  exploration_epsilon_start: 0.6
+  exploration_epsilon_end: 0.0001
+
+  # Critic network settings LSTM
+  critic_network:
+    embed_dim: 256
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"
+    use_q_mixer: False
+    VDN_mode: false  
+    hypernet_layers: 2
+    hypernet_embed: 256
+
+  # Inference network settings - LSTM
+  inference_network:
+    embed_dim: 256
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"

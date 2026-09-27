@@ -1,0 +1,27 @@
+
+defaults:
+  - agent/robot@agent: robot_multicpe_sac
+  - environment: robot
+
+experiment:
+  name: "RobotSignalDetector"
+  description: "Multi-agent signal-detector exploration (robot env + RobotMULTICPE_SAC)"
+  seed: 215
+  num_processes: 1
+  wandb_group: null
+
+training:
+  save_frequency: 50000
+  max_training_steps: 1000
+  cost_per_timestep: 0.0
+  checkpoint_path: null
+  continue_training: false
+  start_step: null
+  eval:
+    eval_period: 100
+    eval_num_env_instances: 4
+    eval_num_trajectories: 1
+
+eval:
+  num_env_instances: 4
+  num_trajectories: 2

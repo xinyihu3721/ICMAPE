@@ -1,0 +1,40 @@
+type: "MULTICPE_QLEARNING"
+learning_rate: 1e-4   # fallback if critic_learning_rate / inference_learning_rate not set
+critic_learning_rate: 5e-5
+inference_learning_rate: 5e-5
+final_learning_rate: 1e-4
+grad_clipping: 2
+buffer_size: 5000000
+gamma: 0.999                         # discount factor for rewards
+batch_size: 128                     # batch size
+num_env_instances: 40
+num_trajectories: 1
+polyak_update_q_network: 0.01      # * times horizon
+frequency_update_i_network: 2      # * times horizon
+replay_ratio: 1
+inference_network_bootstrap_num_batches: 30
+initial_buffer_bootstrap_num_batches: 10
+confidence_level: 0.9
+cost_learning_rate: 5e-5
+uniform_action_only: False  # if true: no RL training; Hydra needs key here for struct overrides
+
+# Architecture - LSTM for inference only; critic remains transformer
+architecture_type: "lstm"
+
+# Critic network settings (transformer - create_critic_network is transformer-only)
+critic_network:
+  embed_dim: 256
+  num_layers: 1
+  dropout: 0
+  activation_type: "gelu"
+  use_q_mixer: False
+  VDN_mode: False  # if true: sum Q_i (VDN); set use_q_mixer false
+  hypernet_layers: 1
+  hypernet_embed: 128
+
+# Inference network settings - LSTM
+inference_network:
+  embed_dim: 256
+  num_layers: 1
+  dropout: 0
+  activation_type: "gelu"

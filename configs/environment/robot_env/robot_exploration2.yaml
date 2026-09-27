@@ -1,0 +1,3 @@
+# Nested ``robot_env`` kind for two-fire exploration — compose via:
+#   defaults: - robot_env: robot_exploration2
+type: RobotExploration2

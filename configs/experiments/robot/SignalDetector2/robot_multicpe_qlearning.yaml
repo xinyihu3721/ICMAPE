@@ -1,0 +1,61 @@
+# @package _global_
+# Two-source signal detection with MULTICPE_QLEARNING_ROBOT.
+# Mirror of the SAC/TD3 fireExplore2 configs; no actor network.
+#
+#   python train_robot.py +experiments/robot/fireExplore2=robot_multicpe_qlearning
+defaults:
+  - override /agent/robot@agent: robot_multicpe_qlearning
+  - override /environment: robot
+
+experiment:
+  name: "RobotSignalDetector"
+  description: "Two-source signal detection Q-learning: Double DQN, epsilon-greedy, per-player or VDN targets. Distractor intensity from 0 to 0.7"
+
+environment:
+  robot_env:
+    type: RobotExploration2
+  enable_stopping_action: true
+  signal_hit_prob: 0.95
+  smoke_decay: 0.3
+  smoke_obs_sigma: 0.07
+  min_signal_dist: 10
+
+training:
+  save_frequency: 50000
+  max_training_steps: 1000
+  cost_per_timestep: 0
+
+agent:
+  grad_clipping: 2
+  buffer_size: 1000000
+  gamma: 0.95
+  batch_size: 512
+  num_env_instances: 128
+  num_trajectories: 1
+  polyak_update_q_network: 0.01
+  frequency_update_i_network: 2
+  replay_ratio: 1
+  inference_network_bootstrap_num_batches: 1000
+  initial_buffer_bootstrap_num_batches: 10
+  exploration_epsilon_start: 0.05
+  exploration_epsilon_end: 0.001
+  uniform_action_only: false
+  architecture_type: "cnn_lstm"
+
+  critic_network:
+    embed_dim: 64
+    num_layers: 1
+    dropout: 0
+    hidden_channels: 32
+    in_channels: 1
+    activation_type: "gelu"
+    VDN_mode: false   # set true to aggregate Q-values via VDN
+
+  inference_network:
+    type: "cnn"
+    grid_size: 25
+    hidden_channels: 32
+    in_channels: 3
+    num_layers: 3
+    activation: "relu"
+    use_batch_norm: false

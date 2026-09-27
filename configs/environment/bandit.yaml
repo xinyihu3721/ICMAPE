@@ -1,0 +1,12 @@
+defaults:
+ - bandit_env: bernoulli_bandit
+num_actions: 4
+horizon: 4
+num_players: 2
+capacity: random
+enable_stopping_action: False
+reward_struct: per_player
+decentralized: True
+
+
+

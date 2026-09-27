@@ -1,0 +1,50 @@
+# Robot MULTICPE TD3 (``icmape.agents.robot.sequential.multicpe_td3_robot.MULTICPE_TD3_ROBOT``).
+# Loaded from Hydra root via ``agent/robot@agent: robot_multicpe_td3``.
+type: "ROBOT_MULTICPE_TD3"
+learning_rate: 1e-4
+inference_learning_rate: 5e-5
+cost_learning_rate: 3e-4
+critic_learning_rate: 5e-5
+actor_learning_rate: 1e-5
+final_learning_rate: 1e-5
+grad_clipping: 1
+buffer_size: 1000000
+gamma: 0.95
+batch_size: 512
+num_env_instances: 128
+num_trajectories: 1
+polyak_update_q_network: 0.01
+frequency_update_i_network: 2
+replay_ratio: 1
+inference_network_bootstrap_num_batches: 300
+initial_buffer_bootstrap_num_batches: 10
+confidence_level: 0.9
+log_interval: 1000
+architecture_type: "cnn_lstm"
+
+actor_network:
+  embed_dim: 64
+  num_layers: 1
+  dropout: 0
+  activation_type: "gelu"
+  shared_critic: false
+  gumbel_temperature: 1.0   # Gumbel–Softmax τ in ActorLSTMTD3
+  gumbel_tau_min: 0.3
+  td3_policy_delay: 2
+
+critic_network:
+  embed_dim: 64
+  num_layers: 1
+  dropout: 0
+  hidden_channels: 32
+  in_channels: 1
+  activation_type: "gelu"
+
+inference_network:
+  type: "cnn"
+  grid_size: 25
+  hidden_channels: 32
+  in_channels: 3
+  num_layers: 3
+  activation: "relu"
+  use_batch_norm: false

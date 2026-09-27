@@ -1,0 +1,60 @@
+# Robot MULTICPE Q-learning (``icmape.agents.robot.sequential.multicpe_qlearning.MULTICPE_QLEARNING_ROBOT``).
+# No actor network — epsilon-greedy over Q-values drives action selection.
+# VDN_mode (critic_network.VDN_mode) switches between per-player and summed-Q targets.
+#
+# Load via: ``agent/robot@agent: robot_multicpe_qlearning``
+type: "ROBOT_MULTICPE_QLEARNING"
+
+# Learning rates
+critic_learning_rate: 5e-5
+inference_learning_rate: 5e-5
+cost_learning_rate: 3e-4
+final_learning_rate: 1e-5
+
+# Optimisation
+grad_clipping: 2
+gamma: 0.95
+polyak_update_q_network: 0.01
+batch_size: 512
+replay_ratio: 1
+
+# Buffer / bootstrap
+buffer_size: 1000000
+initial_buffer_bootstrap_num_batches: 10
+inference_network_bootstrap_num_batches: 300
+
+# Rollout
+num_env_instances: 128
+num_trajectories: 1
+frequency_update_i_network: 2
+
+# Exploration (epsilon-greedy, exponential decay)
+exploration_epsilon_start: 0.05
+exploration_epsilon_end: 0.001
+
+# Set to true for inference-only training (Q-network never updated)
+uniform_action_only: false
+
+confidence_level: 0.9
+log_interval: 1000
+architecture_type: "cnn_lstm"
+
+# Q-learning uses a single critic head by default (online + target copies give Double DQN).
+# Set n_critic: 2 to use clipped double-Q (min of two heads).
+critic_network:
+  embed_dim: 64
+  num_layers: 1
+  dropout: 0
+  hidden_channels: 32
+  in_channels: 1
+  activation_type: "gelu"
+  # VDN_mode: true   # uncomment to sum Q-values over players
+
+inference_network:
+  type: "cnn"
+  grid_size: 25
+  hidden_channels: 32
+  in_channels: 3
+  num_layers: 3
+  activation: "relu"
+  use_batch_norm: false

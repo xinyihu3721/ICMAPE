@@ -1,0 +1,12 @@
+.venv/*
+**/__pycache__/*
+**/*.pth
+*.sh
+wandb/*
+models/*
+outputs/*
+bash_scripts/*
+*.o*
+data/*
+bash_scripts/*
+result_summary/*

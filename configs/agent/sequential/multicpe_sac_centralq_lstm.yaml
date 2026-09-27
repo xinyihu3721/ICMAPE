@@ -1,0 +1,43 @@
+type: "MULTICPE_SAC_CENTRALQ"
+inference_learning_rate: 5e-5
+cost_learning_rate: 3e-4
+ent_learning_rate: 1e-5
+critic_learning_rate: 5e-5
+actor_learning_rate: 1e-5
+final_learning_rate: 1e-5
+grad_clipping: 2
+buffer_size: 5000000
+gamma: 0.5 #0.999                         # discount factor for rewards
+batch_size: 256                    # batch size
+num_env_instances: 20
+num_trajectories: 3
+polyak_update_q_network: 0.01      # * times horizon
+frequency_update_i_network: 2      # * times horizon
+replay_ratio: 1
+inference_network_bootstrap_num_batches: 30
+initial_buffer_bootstrap_num_batches: 10
+confidence_level: 0.9
+ent_coef: 'auto' # or float
+architecture_type: "lstm"  # Use LSTM instead of transformer
+
+actor_network:
+  embed_dim: 256
+  num_layers: 1
+  dropout: 0.1
+  activation_type: "gelu"
+  shared_critic: False
+
+# Network specific settings
+critic_network: 
+  embed_dim: 256
+  num_layers: 1
+  dropout: 0.1
+  activation_type: "gelu"
+
+inference_network:
+  embed_dim: 256
+  num_layers: 1
+  dropout: 0.1
+  activation_type: "gelu"
+
+

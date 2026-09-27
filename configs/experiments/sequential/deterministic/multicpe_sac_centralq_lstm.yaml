@@ -1,0 +1,72 @@
+# @package _global_
+defaults:
+  - override /agent/sequential@agent: multicpe_sac_centralq_lstm
+  - override /environment: bandit
+
+experiment:
+  name: "DecentDeterministicBanditCapacity"
+  description: "Decentralized Deterministic bandit. Multi-agent SAC with centralized critic (global observation), per-agent Q, LSTM."
+
+environment:
+  bandit_env:
+    type: "GaussianBandit"
+    min_value: 0
+    max_value: 1
+    std: 0
+    num_magic_actions: 0
+    std_magic_action: 0
+    minimum_gap: 0
+  enable_stopping_action: True
+
+
+
+training:
+  save_frequency: 50000
+  max_training_steps: 500000
+  cost_per_timestep: 0  # Enabled only if stopping action is enabled
+
+agent:
+  grad_clipping: 2
+  buffer_size: 5000000
+  gamma: 0.95                       # discount factor for rewards
+  batch_size: 512                # batch size
+  num_env_instances: 40
+  num_trajectories: 1
+  polyak_update_q_network: 0.01      # * times horizon
+  frequency_update_i_network: 2      # * times horizon
+  replay_ratio: 1
+  inference_network_bootstrap_num_batches: 300
+  initial_buffer_bootstrap_num_batches: 10
+  ent_coef: 'auto'
+  actor_learning_rate: 1e-5
+  
+
+
+  # Architecture type - LSTM
+  architecture_type: "lstm"
+
+  # Critic network settings (LSTM - no num_heads, attn_dropout, resid_dropout needed)
+  critic_network:
+    embed_dim: 256
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"
+
+
+  # Inference network settings (LSTM)
+  inference_network:
+    embed_dim: 256
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"
+  
+
+  # Actor network settings (LSTM)
+  actor_network:
+    embed_dim: 256
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"
+    shared_critic: False
+    
+

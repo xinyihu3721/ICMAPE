@@ -1,0 +1,71 @@
+# @package _global_
+# Two-source signal detection with RobotMULTICPE_TD3.
+# Agents 0 and 1 are sparse point-detectors (high-prob); agent 2 observes Voronoi smoke.
+# Signal/distractor pairs sampled with min Manhattan distance = 10.
+#
+#   python train_sequential.py +experiments/robot/fireExplore2=robot_multicpe_td3
+defaults:
+  - override /agent/robot@agent: robot_multicpe_td3
+  - override /environment: robot
+
+experiment:
+  name: "RobotSignalDetector"
+  description: "Two-source signal detection TD3: Gumbel straight-through actor, twin critics, delayed policy update. Distractor intensity from 0 to 0.7"
+
+environment:
+  robot_env:
+    type: RobotExploration2
+  enable_stopping_action: true
+  signal_hit_prob: 0.95
+  smoke_decay: 0.3
+  smoke_obs_sigma: 0.07
+  min_signal_dist: 10
+
+training:
+  save_frequency: 50000
+  max_training_steps: 1000
+  cost_per_timestep: 0
+
+agent:
+  grad_clipping: 1
+  buffer_size: 1000000
+  gamma: 0.95
+  batch_size: 512
+  num_env_instances: 128
+  num_trajectories: 1
+  polyak_update_q_network: 0.01
+  frequency_update_i_network: 2
+  replay_ratio: 1
+  inference_network_bootstrap_num_batches: 300
+  initial_buffer_bootstrap_num_batches: 10
+  actor_learning_rate: 1e-5
+  architecture_type: "cnn_lstm"
+
+  critic_network:
+    embed_dim: 64
+    num_layers: 1
+    dropout: 0
+    hidden_channels: 32
+    in_channels: 1
+    activation_type: "gelu"
+
+  inference_network:
+    type: "cnn"
+    grid_size: 25
+    hidden_channels: 32
+    in_channels: 3
+    num_layers: 3
+    activation: "relu"
+    use_batch_norm: false
+
+  actor_network:
+    embed_dim: 64
+    hidden_channels: 32
+    in_channels: 1
+    num_layers: 1
+    dropout: 0
+    activation_type: "gelu"
+    shared_critic: false
+    gumbel_temperature: 0.7
+    gumbel_tau_min: 0.3
+    td3_policy_delay: 5
