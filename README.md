@@ -219,7 +219,7 @@ The `<tag>` encodes method, horizon, arms, players, and seed, e.g. `ICPE_IND_H20
 #### Beta-distributed arm means (`evaluete_beta_bandit.py`)
 
 
-Tests whether the agent generalises when arm means are drawn from $\text{Beta}(\alpha, \beta)$ instead of the uniform training prior. Sweeps all 25 combinations of $\alpha, \beta \in \{0.5, 1, 3, 5, 7\}$.
+Tests whether the agent generalises when arm means are drawn from $\text{Beta}(\alpha, \beta)$ instead of the uniform training prior. Sweeps all 25 combinations of $\alpha, \beta \in \lbrace 0.5, 1, 3, 5, 7 \rbrace$.
 **Configure at top of script:** `MODEL_PATH` and `OUT_DIR`
 
 ```bash
@@ -237,7 +237,7 @@ python evaluation_scripts/bandit/evaluete_beta_bandit.py
 #### Dirichlet-distributed arm capacities (`evaluete_dirichlet_bandit.py`)
 
 
-Tests robustness when arm capacities are drawn from $\text{Dirichlet-Categorical}(\alpha)$. Sweeps concentration values $\alpha \in \{0.1, 0.5, 1, 5, 10\}$ and records per-episode total variation (TV) distance from the uniform prior alongside accuracy.
+Tests robustness when arm capacities are drawn from $\text{Dirichlet-Categorical}(\alpha)$. Sweeps concentration values $\alpha \in \lbrace 0.1, 0.5, 1, 5, 10 \rbrace$ and records per-episode total variation (TV) distance from the uniform prior alongside accuracy.
 
   
 **Configure at top of script:** `MODEL_PATH` and `OUT_DIR`
@@ -291,7 +291,7 @@ Reads `summary_beta_<tag>.npz` and the per-combo `.npz` files. Produces:
 
 - Stopping-step heatmap over the same grid
 
-- $\mathrm{KL}(\text{Beta} \| \text{Uniform})$ vs accuracy scatter and $\mathrm{KL}(\text{Uniform} \| \text{Beta})$ vs accuracy scatter
+- $\mathrm{KL}(\text{Beta} \Vert \text{Uniform})$ vs accuracy scatter and $\mathrm{KL}(\text{Uniform} \Vert \text{Beta})$ vs accuracy scatter
 
   
 **Configure at top of script:** set `DATA_DIR` and `TAG` (the `<tag>` string in the `.npz` filenames).
@@ -506,7 +506,7 @@ The `<tag>` encodes method, horizon, grid size, view size, and seed, e.g. `TD3_H
 
 ### Step 2 — Robustness evaluation (`evaluate_beta_robot_env.py`)
 
-Tests whether the agent generalises when the distractor intensity is drawn from $\text{Beta}(\alpha, \beta)$ scaled to $[\text{intensity\_min}, \text{intensity\_max}]$ instead of the uniform training prior. Sweeps all 25 combinations of $\alpha, \beta \in \{0.5, 1, 3, 5, 7\}$.
+Tests whether the agent generalises when the distractor intensity is drawn from $\text{Beta}(\alpha, \beta)$ scaled to [`intensity_min`, `intensity_max`] instead of the uniform training prior. Sweeps all 25 combinations of $\alpha, \beta \in \lbrace 0.5, 1, 3, 5, 7 \rbrace$.
 
 **Configure at top of script:**`MODEL_PATHS`  and `OUT_DIR`
 
@@ -576,7 +576,7 @@ Reads `summary_beta_<tag>.npz` and the per-combo raw files. Produces the same se
 
 - Stopping-step heatmap
 
-- $\mathrm{KL}(\text{Beta} \| \text{Uniform})$ vs accuracy scatter
+- $\mathrm{KL}(\text{Beta} \Vert \text{Uniform})$ vs accuracy scatter
 
 **Configure at top of script:** set `BASE_DIR` (root containing per-tag subdirectories). Set `SUMMARY_PATHS` to a list of specific files, or leave as `None` to auto-discover.
 
